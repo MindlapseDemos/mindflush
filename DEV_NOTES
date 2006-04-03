@@ -1,0 +1,6 @@
+- add a symlink or a copy of the 3dengfx directory inside the src directory.
+- to avoid commiting volatile files, use the ./commit script to commit.
+- to add a part, add its .o in the Makefile at the top, and then add its
+  header file to the includes at src/demo_parts.hpp, and an appropriate
+  parts.push_back(new PartName);\ at the ADD_ALL_PARTS() macro in
+  demo_parts.hpp

@@ -1,0 +1,67 @@
+# 3dengfx demosystem script v1.2
+# ------------------------------
+# format: <time> <command> <part_name> [args]
+# If time has an 's' suffix it's seconds, otherwise milliseconds.
+# For a list of available commands, see the bottom of this file.
+
+# shaders:
+# sdr/disp_p.glsl	- displacement with ease in/out
+# sdr/sweep_p.glsl	- horizontal sweep, 1/2 of full show time
+
+#0 fx overlay 1s 2s data/img/env.jpg
+#0 fx flash 2000 500 <1,0,0>
+#0 fx flash 2500 500 <0,1,0>
+#0 fx flash 3000 500 <0,0,1>
+#0 fx neg 1s 9s
+#0 fx overlay 5s 9s t0 sdr/disp_p.glsl
+#0 fx overlay 5s 4s t0 sdr/slide_p.glsl
+
+0s		start_part	box
+100000s end_part	box
+100000s end.
+
+# -----------------
+# command reference
+# -----------------
+#
+# start_part <part>
+#		starts the specified demo-part.
+#
+# end_part <part>
+#		ends the specified demo-part.
+#
+# rename_part <part> <new name>
+#		renames a part.
+#		Note: overlapping parts are executed in lexicographical order.
+#
+# set_clear <part> true/false
+#		sets whether the specified part should clear the framebuffer
+#		before starting its graphics update.
+#
+# set_rtarget <part> <target>
+#		changes the render target of the specified part.
+#		<target> must be either fb (for framebuffer) or the name of a
+#		texture	register (t0, t1, t2, t3).
+#
+# fx <effect> <time> <duration> <effect specific arguments> ...
+#		schedules the specified post-processing effect for execution at
+#		the specified time, for the specified duration.
+#		Note: effects may overlapped, in which case are executed in the order
+#		that they are encountered in the demoscript.
+#
+# end
+#		ends the demo...
+#
+# ---------------------------------
+# Post-Processing Effects Reference
+# ---------------------------------
+#
+# neg <start> <duration>
+#		inverse video for the specified time interval.
+#
+# flash <peak-time> <duration> [color]
+#		screen flash, color is optional, default is white.
+#		Note: the flash is sinusoidal, with the peak occuring at the specified time.
+#
+# overlay <start> <duration> <texture> [shader]
+#		--- SUBJECT TO CHANGE ---

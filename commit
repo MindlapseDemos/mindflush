@@ -1,0 +1,17 @@
+#!/bin/sh
+
+vfiles='demoscript 3dengfx.conf'
+
+# backup volatile files and revert them ...
+for i in $vfiles; do
+	cp $i /tmp/$i
+	svn revert $i
+done
+
+# ... commit ...
+svn commit $@
+
+# ... and restore the files.
+for i in $vfiles; do
+	cp /tmp/$i $i
+done

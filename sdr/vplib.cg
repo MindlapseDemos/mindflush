@@ -1,0 +1,45 @@
+uniform int light_count;
+
+/* --- phong_specular(float3 normal, float3 light_direction) ---
+ * calculates the phong specular component.
+ */
+float phong(float3 normal, float3 ldir) {
+	const float3 vdir = float3(0.0, 0.0, -1.0);
+	float3 h = normalize(ldir + vdir);
+
+	return pow(max(0, dot(normal, h)), glstate.material.shininess);
+}
+
+/* --- calc_lighting(normal, light_direction) ---
+ * calculates lighting the usual way.
+ */
+float4 calc_lighting(float3 normal, float3 ldir) {
+	const float3 vdir = float3(0.0, 0.0, -1.0);
+	float3 hvec = normalize(ldir + vdir);
+
+	float4 lt = lit(dot(normal, ldir), dot(normal, hvec), (float)glstate.material.shininess);
+	
+	return lt.y * glstate.material.diffuse + lt.z * glstate.material.specular;
+}
+
+/* --- fresnel(normal, eye_to_vert, ammount) ---
+ * something that looks like, but has nothing to do actually with,
+ * the fresnel term when it comes to reflectivity as a function of
+ * incident angle.
+ */
+float fresnel(float3 normal, float3 eye_to_vert, float ammount) {
+	//const float3 vdir = float3(0.0, 0.0, -1.0);
+	float one_m_cos_angle = dot(normal, eye_to_vert) + 1;
+	one_m_cos_angle = pow(one_m_cos_angle, 5);
+	return lerp(one_m_cos_angle, 1, ammount);
+}
+
+/* --- sphere_map(normal) ---
+ * calculates texture coordinates for spherical mapping.
+ */
+float2 sphere_map(float3 normal) {
+	const float3 vdir = float3(0.0, 0.0, -1.0);
+	float3 refl = reflect(vdir, normal);
+	float m = 2.0 * sqrt(refl.x * refl.x + refl.y * refl.y + (refl.z+1.0) * (refl.z+1.0));
+	return float2(-refl.x / m, -refl.y / m) + float2(0.5, 0.5);
+}

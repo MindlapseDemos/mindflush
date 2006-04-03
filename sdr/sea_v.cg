@@ -1,0 +1,76 @@
+//#include "sdr/vplib.cg"
+
+struct in_data {
+	float4 pos: POSITION;
+	float4 normal: NORMAL;
+};
+
+struct out_data {
+	float4 pos: POSITION;
+	float4 col: COLOR0;
+	float4 tc0: TEXCOORD0;
+};
+
+
+/*
+float height(float x, float y, float t) {
+	x/=50.0;
+	y/=50.0;
+	const float2 rip = float2(500, 500);
+	float d = length(float2(x, y) - rip);
+	float res = cos(y + t) * 0.7 + sin(x + t);
+	res += sin(y * 8.0 + t) * 0.2 + cos(x * 8.0 + t) * 0.75;
+	res += sin(d - t);
+	return res * 5.0;
+}
+*/
+
+float height(float x, float y, float t) {
+	float param = x + sin(y) + cos(y + t) + y * 0.5 + sin(x * 2) + x * 0.8 + cos(t * 2.0);
+	param *= 0.1;
+
+	float res = cos(param) + cos(param * 1.1);
+	float res2 = sin(param * 1.2) + sin(param * 1.3);
+	return (res + res2) * 2.0;
+}
+
+out_data main(in_data idata, uniform float t) {
+	out_data odata;
+	const float3 vdir = float3(0.0, 0.0, -1.0);
+
+	float x = idata.pos.x;
+	float y = idata.pos.z;
+
+	const float dt = 0.1;
+	float h = height(x, y, t);
+	float prev_x = height(x - dt, y, t);
+	float prev_y = height(x, y - dt, t);
+	
+	//const float norm_mod = 0.2;
+	const float norm_mod = 2.0;//0.5;
+	float3 normal = float3(0, 1, 0);
+	normal.x += (prev_x - h) * norm_mod;
+	normal.z += (prev_y - h) * norm_mod;
+	normal = normalize(normal);
+
+	float4 local_pos = idata.pos + float4(0, h, 0, 0);
+	
+	// output clip space position
+	odata.pos = mul(glstate.matrix.mvp, local_pos);
+
+	// transform position to view space for lighting
+	float3 pos_vcs = mul((float4x4)glstate.matrix.modelview, idata.pos).xyz;
+	float3 view_vec = normalize(pos_vcs);
+		
+	/*float3 lpos = (float3)glstate.light[0].position;
+	float3 ldir = normalize(lpos - vcs_pos);
+	float4 col = calc_lighting(normal, ldir) * glstate.light[0].diffuse;*/
+
+	odata.col = float4(0, 0, 0, 1);
+
+	float4 refl_vec = float4(reflect(view_vec, normal), 1);
+	odata.tc0.xyz = (float3)mul((float4x4)glstate.matrix.texture, refl_vec);
+	odata.tc0.w = 1;
+
+	return odata;
+}
