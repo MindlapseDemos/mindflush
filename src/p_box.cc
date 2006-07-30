@@ -16,13 +16,17 @@ static const float fieldsz = 11.3;
 static const float wall_dist = 6.75;
 static const float iso_val = 0.8;
 	
-static Object *blobj, *blob_art;
-static GfxProg *phong_prog;
+static Object *blobj;
+static GfxProg *gfx_prog;
 
 static void update_blobs(unsigned long time);
 static float eval_func(const Vector3 &vec, float t);
 
-BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj-2.3ds") {
+float foo = 0.0;
+
+BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
+	scene->set_ambient_light(Color(0.1, 0.1, 0.1));
+
 	for(int i=0; i<bcount; i++) {
 		char objname[] = "Sphere0x";
 		objname[strlen(objname) - 1] = '1' + i;
@@ -37,7 +41,7 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj-2.3ds") {
 
 	Camera *cam = scene->get_active_camera();
 	cam->set_timeline_mode(TIME_WRAP);
-	cam->set_fov(DEG_TO_RAD(20.0));
+	cam->set_fov(DEG_TO_RAD(30.0));
 
 	Object *cube = scene->get_object("Box01");
 	cube->set_hidden(true);
@@ -55,26 +59,17 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj-2.3ds") {
 	Shader phong_pixel = get_shader("sdr/phong_p.glsl", PROG_PIXEL);
 	Shader phong_vertex = get_shader("sdr/phong_v.glsl", PROG_VERTEX);
 	if(!phong_pixel || !phong_vertex) exit(EXIT_FAILURE);
-	phong_prog = new GfxProg(phong_vertex, phong_pixel);
+	gfx_prog = new GfxProg(phong_vertex, phong_pixel);
 
 	blobj = new Object;
 	blobj->set_dynamic(true);
 	blobj->mat.diffuse_color = Color(0.074, 0.52, 0.83);
 	blobj->mat.specular_color = 1.0;
 	blobj->mat.specular_power = 60.0;
-	blobj->set_gfx_program(phong_prog);
-	//scene->add_object(blobj);
-
-	blob_art = new Object;
-	blob_art->set_dynamic(true);
-	blob_art->mat.diffuse_color = Color(0.91, 0.65, 0.15);
-	//blob_art->mat.alpha = 0.6;
-	blob_art->mat.specular_color = 1.0;
-	blob_art->mat.specular_power = 60.0;
-	//blob_art->mat.wireframe = true;
-	blob_art->mat.shading = SHADING_FLAT;
-	blob_art->mat.set_texture(get_texture("data/img/refmap2.png"), TEXTYPE_ENVMAP);
-	//scene->add_object(blob_art);
+	blobj->set_gfx_program(gfx_prog);
+	blobj->set_texture_addressing(TEXADDR_CLAMP);
+	blobj->mat.set_texture(get_texture("data/img/cont_cel_pal.png"), TEXTYPE_DIFFUSE);
+	scene->add_object(blobj);
 }
 
 BoxPart::~BoxPart() {
@@ -84,16 +79,18 @@ void BoxPart::draw_part() {
 	float t = (float)time / 1000.0;
 	update_blobs(time);
 	
-	sf->triangulate(&blobj->mesh, iso_val, t, true);
+	sf->triangulate(&blobj->mesh, iso_val, t * 0.75, true);
 	blobj->mesh.invert_winding();
+	blobj->set_rotation(Vector3(t / 2.0, 0, 0));
+	blobj->rotate(Vector3(0, t / 2.0, 0));
 
-	sf_flat->triangulate(&blob_art->mesh, iso_val, t, true);
-	blob_art->mesh.invert_winding();
+	gfx_prog->set_parameter("foo", (scalar_t)(sin(t / 2.0) * 0.5 + 0.5));
+
+	//sf_flat->triangulate(&blob_art->mesh, iso_val, t, true);
+	//blob_art->mesh.invert_winding();
 	
 	scene->render(time);
-
-	blobj->render(time);
-	//blob_art->render(time);
+	//blobj->render(time);
 }
 
 

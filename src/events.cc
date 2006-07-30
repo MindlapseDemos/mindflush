@@ -10,6 +10,8 @@ void key_handler(int key) {
 	extern ntimer timer;
 	extern Scene *scene;
 	*/
+	extern float foo;
+	char str[128];
 	TargetCamera *cam = dynamic_cast<TargetCamera*>(const_cast<Camera*>(view_mat_camera));
 	
 	switch(key) {
@@ -23,6 +25,20 @@ void key_handler(int key) {
 
 	case '`':
 		screen_capture();
+		break;
+
+	case '-':
+		foo -= 0.01;
+		if(foo < 0.0) foo = 0.0;
+		sprintf(str, "%f", foo);
+		fxwt::set_window_title(str);
+		break;
+
+	case '=':
+		foo += 0.01;
+		if(foo > 0.98) foo = 0.98;
+		sprintf(str, "%f", foo);
+		fxwt::set_window_title(str);
 		break;
 
 	/*
