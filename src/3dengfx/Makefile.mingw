@@ -1,0 +1,58 @@
+obj :=
+
+# set the compiler's prefix
+#prefix := i586-mingw32msvc-
+prefix :=
+
+# choose processor
+#processor := -march=pentium4
+processor :=
+
+CC := $(prefix)gcc
+CXX := $(prefix)g++
+AR := $(prefix)ar
+
+opt := -O3 -ffast-math $(processor)
+#opt := -g
+inc_flags := -Isrc -Ilibs -I/usr/local/include
+
+CXXFLAGS := $(opt) -ansi -pedantic -Wall $(inc_flags)
+CFLAGS := $(opt) -std=c89 -pedantic -Wall $(inc_flags)i
+
+include src/3dengfx/Makefile-part
+include src/gfx/Makefile-part
+include src/n3dmath2/Makefile-part
+include src/dsys/Makefile-part
+include src/common/Makefile-part
+include src/fxwt/Makefile-part
+include src/sim/Makefile-part
+include libs/lib3ds/Makefile-part
+
+.PHONY: all
+all: lib3dengfx.a
+
+.PHONY: static
+static: lib3dengfx.a
+
+lib3dengfx.a: 3dengfx-config $(obj)
+	$(AR) rcs $@ $(obj)
+	@echo '---- static library created successfully! ----'
+
+-include $(obj:.o=.d)
+
+%.d: %.cpp
+	@set -e; rm -f $@; $(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; rm -f $@.$$$$
+
+%.d: %.c
+	@set -e; rm -f $@; $(CC) -MM $(CFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; rm -f $@.$$$$
+
+
+.PHONY: clean
+clean:
+	$(RM) $(obj) lib3dengfx.a
+
+.PHONY: cleandep
+cleandep:
+	find . \( -name '*.d' -o -name '*.d.*' \) -exec $(RM) '{}' ';'

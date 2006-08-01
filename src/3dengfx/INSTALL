@@ -1,0 +1,23 @@
+3dengfx 0.5 - installation instructions
+---------------------------------------
+
+./configure  (try with an -h parameter for options)
+make
+make install
+
+By default the installation prefix is /usr/local.
+By default it used the native system interface for events, windows etc.
+By default it depends on libpng and libjpeg for texture loading.
+
+dependencies (optional depndencies are controlled by the configuration script)
+OpenGL
+SDL* (optional)
+GLUT* (optional)
+GTK* (optional)
+libpng (optional)
+libjpeg (optional)
+lib3ds
+freetype 2
+
+* SDL, GLUT or GTK are mutually exclusive and none of them are needed when
+  using the native interface, i.e. X11/Win32 (default)

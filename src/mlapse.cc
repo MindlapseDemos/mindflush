@@ -19,7 +19,7 @@ fps_counter fps;
 
 vector<dsys::Part*> parts;
 
-static const char *title_str = "Mindlapse - Breakpoint 2006 Demo";
+static const char *title_str = "Mindlapse - Evoke 2006 Demo";
 
 int main(int argc, char **argv) {
 	if(!init()) {
@@ -51,7 +51,7 @@ bool init() {
 	clear(0);
 	fxwt::set_font_size(35);
 	fxwt::set_font(fxwt::FONT_SERIF);
-	fxwt::print_text("Mindlapse :: Breakpoint 2006", Vector2(0.1, 0.45), 0.08);
+	fxwt::print_text("Mindlapse :: Evoke 2006", Vector2(0.25, 0.45), 0.08);
 	fxwt::print_text("Loading...", Vector2(0.1, 0.90), 0.06, Color(0.2, 0.3, 0.9));
 	flip();
 

@@ -11,7 +11,7 @@ const static int bcount = 4;
 static Blob blob[bcount];
 
 static ScalarField *sf, *sf_flat;
-static const int grid = 23;
+static const int grid = 26;
 static const float fieldsz = 11.3;
 static const float wall_dist = 6.75;
 static const float iso_val = 0.8;
@@ -68,6 +68,8 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
 	blobj->mat.specular_power = 60.0;
 	blobj->set_gfx_program(gfx_prog);
 	blobj->set_texture_addressing(TEXADDR_CLAMP);
+	blobj->set_highlight(true);
+	blobj->set_highlight_color(Color(0.3, 0.3, 0.3));
 	blobj->mat.set_texture(get_texture("data/img/cont_cel_pal.png"), TEXTYPE_DIFFUSE);
 	scene->add_object(blobj);
 }
@@ -77,6 +79,7 @@ BoxPart::~BoxPart() {
 
 void BoxPart::draw_part() {
 	float t = (float)time / 1000.0;
+	float foo = sin(t / 2.0) * 0.5 + 0.5;
 	update_blobs(time);
 	
 	sf->triangulate(&blobj->mesh, iso_val, t * 0.75, true);
@@ -84,7 +87,8 @@ void BoxPart::draw_part() {
 	blobj->set_rotation(Vector3(t / 2.0, 0, 0));
 	blobj->rotate(Vector3(0, t / 2.0, 0));
 
-	gfx_prog->set_parameter("foo", (scalar_t)(sin(t / 2.0) * 0.5 + 0.5));
+	gfx_prog->set_parameter("foo", foo);
+	blobj->set_highlight_line_width((1.0 - foo) * 8.0);
 
 	//sf_flat->triangulate(&blob_art->mesh, iso_val, t, true);
 	//blob_art->mesh.invert_winding();
