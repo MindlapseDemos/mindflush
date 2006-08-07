@@ -34,7 +34,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #endif	// SINGLE_PRECISION_MATH
 
 static scalar_t global_time;
-static const scalar_t timeslice = 1.0 / 30.0;
 
 // just a trial and error constant to match point-sprite size with billboard size
 #define PSPRITE_BILLBOARD_RATIO		100
@@ -160,6 +159,7 @@ ParticleSysParams::ParticleSysParams() {
 
 
 ParticleSystem::ParticleSystem(const char *fname) {
+	timeslice = 1.0 / 50.0;
 	SysCaps sys_caps = get_system_capabilities();
 	/* XXX: My Radeon Mobility 9000 supports point sprites but does not say so
 	 * in the extension string, it only has point params there. So I changed this
@@ -182,8 +182,22 @@ ParticleSystem::ParticleSystem(const char *fname) {
 	}
 }
 
-ParticleSystem::~ParticleSystem() {}
+ParticleSystem::~ParticleSystem() {
+	reset();
+}
 
+void ParticleSystem::reset() {
+	prev_update = -1.0;
+	std::list<Particle*>::iterator iter = particles.begin();
+	while(iter != particles.end()) {
+		delete *iter++;
+	}
+	particles.clear();
+}
+
+void ParticleSystem::set_update_interval(scalar_t timeslice) {
+	this->timeslice = timeslice;
+}
 
 void ParticleSystem::set_params(const ParticleSysParams &psys_params) {
 	this->psys_params = psys_params;

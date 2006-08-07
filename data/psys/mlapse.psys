@@ -1,0 +1,18 @@
+psize: 250.0
+life: 2.4
+birth-rate: 200.0
+grav: 0, 0, 0
+shoot: 0, 0, 0
+shoot-r: 0.03, 0.03, 0.03
+friction: 1.0
+spawn_off: 0, 0, 0
+#color_start: 0.3, 0.4, 1.0, 1
+#color_end: 0.3, 0.4, 1.0, 0.1
+color_start: 1.0, 0.2, 0.3, 1.0
+color_end: 0.3, 0.2, 1.0, 0.1
+big_particles: true
+#tex: /home/nuclear/3ddata/textures/particles/blurred_spikey_star.png
+tex: /home/nuclear/3ddata/textures/particles/psys03.png
+
+#halo: /home/nuclear/3ddata/textures/particles/blurred_sharp_star.png
+#halo_size: 800.0

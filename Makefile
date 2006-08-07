@@ -1,5 +1,5 @@
 obj := src/mlapse.o src/events.o\
-	src/p_box.o
+	src/p_box.o src/p_plat.o src/p_intro.o
 bin := mlapse
 eng_dir=src/3dengfx
 

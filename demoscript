@@ -16,8 +16,10 @@
 #0 fx overlay 5s 9s t0 sdr/disp_p.glsl
 #0 fx overlay 5s 4s t0 sdr/slide_p.glsl
 
-0s		start_part	box
-100000s end_part	box
+#parts: box
+
+0s		start_part	intro
+100000s end_part	intro
 100000s end.
 
 # -----------------

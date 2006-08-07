@@ -140,6 +140,8 @@ enum ParticleType {PTYPE_PSYS, PTYPE_BILLBOARD, PTYPE_MESH};
  */
 class ParticleSystem : public Particle {
 protected:
+	scalar_t timeslice;
+
 	bool ready;
 	bool psprites_unsupported;
 	std::list<Particle*> particles;
@@ -159,6 +161,9 @@ protected:
 public:
 	ParticleSystem(const char *fname = 0);
 	virtual ~ParticleSystem();
+
+	virtual void reset();
+	virtual void set_update_interval(scalar_t timeslice);
 
 	virtual void set_params(const ParticleSysParams &psys_params);
 	virtual ParticleSysParams *get_params();
