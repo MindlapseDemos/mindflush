@@ -737,10 +737,10 @@ void draw_line(const Vertex &v1, const Vertex &v2, scalar_t w1, scalar_t w2) {
 	load_xform_matrices();
 
 	Vertex quad[] = {
-		Vertex(Vector3(-w1, 0, 0), 0.0, v1.tex[0].u),
-		Vertex(Vector3(-w2, len, 0), 0.0, v2.tex[0].u),
-		Vertex(Vector3(w2, len, 0), 1.0, v2.tex[0].u),
-		Vertex(Vector3(w1, 0, 0), 1.0, v1.tex[0].u)
+		Vertex(Vector3(-w1, 0, 0), v1.tex[0].u, 0.0),
+		Vertex(Vector3(-w2, len, 0), v2.tex[0].u, 0.0),
+		Vertex(Vector3(w2, len, 0), v2.tex[0].u, 1.0),
+		Vertex(Vector3(w1, 0, 0), v1.tex[0].u, 1.0)
 	};
 
 	set_lighting(false);

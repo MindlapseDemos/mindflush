@@ -7,7 +7,7 @@ static RendCurve *rend_mlapse;
 static ParticleSystem *mlpsys;
 static Fuzzy orig_birth_rate;
 
-static const int pulse_dur = 3000;
+static const int pulse_dur = 2000;
 
 IntroPart::IntroPart() : ScenePart("intro", (Scene*)0) {
 	scene = new Scene;
@@ -20,7 +20,9 @@ IntroPart::IntroPart() : ScenePart("intro", (Scene*)0) {
 	mlapse->set_arc_parametrization(true);
 
 	rend_mlapse = new RendCurve(mlapse);
-	rend_mlapse->set_width(0.1);
+	rend_mlapse->set_width(1.0);
+	rend_mlapse->set_blending_mode(BLEND_ONE, BLEND_ONE);
+	rend_mlapse->get_material_ptr()->set_texture(get_texture("data/img/pulse.png"), TEXTYPE_DIFFUSE);
 
 	mlpsys = new ParticleSystem;
 	if(!psys::load_particle_sys_params("data/psys/mlapse.psys", mlpsys->get_params())) {
@@ -42,12 +44,21 @@ IntroPart::~IntroPart() {
 	delete mlapse;
 }
 
+#define MIN(a, b)	((a) < (b) ? (a) : (b))
+
 void IntroPart::draw_part() {
 	static unsigned long ptime, prev_ptime;
 	float t = (float)time / 1000.0;
 	scene->render(time);
-	//rend_mlapse->render(time);
 
+	ptime = (time % pulse_dur);
+	if(ptime < pulse_dur) {
+		float start = (float)ptime / pulse_dur;
+		float end = MIN((float)(ptime + pulse_dur / 5) / pulse_dur, 1.0);
+		rend_mlapse->render_segm(start, end);
+	}
+
+	/*
 	ptime = time % pulse_dur * 4;
 	if(ptime > pulse_dur) {
 		mlpsys->get_params()->birth_rate = 0.0;
@@ -60,4 +71,5 @@ void IntroPart::draw_part() {
 	mlpsys->update();
 	mlpsys->draw();
 	prev_ptime = ptime;
+	*/
 }

@@ -60,6 +60,7 @@ public:
 	Material get_material() const;
 
 	bool render(unsigned long time = XFORM_LOCAL_PRS);
+	bool render_segm(float start, float end, unsigned long time = XFORM_LOCAL_PRS);
 };
 
 #endif	// _REND_CURVE_HPP_

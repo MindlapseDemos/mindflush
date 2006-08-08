@@ -12,7 +12,7 @@ color_start: 1.0, 0.2, 0.3, 1.0
 color_end: 0.3, 0.2, 1.0, 0.1
 big_particles: true
 #tex: /home/nuclear/3ddata/textures/particles/blurred_spikey_star.png
-tex: /home/nuclear/3ddata/textures/particles/psys03.png
+tex: data/img/psys03.png
 
 #halo: /home/nuclear/3ddata/textures/particles/blurred_sharp_star.png
 #halo_size: 800.0
