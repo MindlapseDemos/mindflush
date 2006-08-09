@@ -135,7 +135,7 @@ bool RendCurve::render_segm(float start, float end, unsigned long time) {
 	Vector3 prev_pos = (*curve)(start);
 	for(int i=1; i<line_count; i++) {
 		Vector3 pos = (*curve)(t);
-		draw_line(Vertex(prev_pos, (float)i / (float)line_count), Vertex(pos, (float)(i + 1) / line_count), width, width);
+		draw_line(Vertex(prev_pos, (float)i / (float)line_count), Vertex(pos, (float)(i + 1) / line_count), width, width, mat.diffuse_color);
 		prev_pos = pos;
 		t += dx;
 	}

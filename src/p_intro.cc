@@ -4,10 +4,12 @@
 
 static Curve *mlapse;
 static RendCurve *rend_mlapse;
-static ParticleSystem *mlpsys;
-static Fuzzy orig_birth_rate;
+//static ParticleSystem *mlpsys;
+//static Fuzzy orig_birth_rate;
 
 static const int pulse_dur = 2000;
+static const int pulse_width = pulse_dur / 3;
+
 
 IntroPart::IntroPart() : ScenePart("intro", (Scene*)0) {
 	scene = new Scene;
@@ -20,10 +22,13 @@ IntroPart::IntroPart() : ScenePart("intro", (Scene*)0) {
 	mlapse->set_arc_parametrization(true);
 
 	rend_mlapse = new RendCurve(mlapse);
-	rend_mlapse->set_width(1.0);
+	rend_mlapse->set_width(0.9);
+	rend_mlapse->set_detail(20);
 	rend_mlapse->set_blending_mode(BLEND_ONE, BLEND_ONE);
-	rend_mlapse->get_material_ptr()->set_texture(get_texture("data/img/pulse.png"), TEXTYPE_DIFFUSE);
+	rend_mlapse->mat.diffuse_color = Color(0.3, 0.4, 1.0);
+	rend_mlapse->mat.set_texture(get_texture("data/img/pulse.png"), TEXTYPE_DIFFUSE);
 
+	/*
 	mlpsys = new ParticleSystem;
 	if(!psys::load_particle_sys_params("data/psys/mlapse.psys", mlpsys->get_params())) {
 		exit(0);
@@ -32,9 +37,10 @@ IntroPart::IntroPart() : ScenePart("intro", (Scene*)0) {
 	mlpsys->set_update_interval(1.0 / 120.0);
 	//scene->add_particle_sys(mlpsys);
 	orig_birth_rate = mlpsys->get_params()->birth_rate;
+	*/
 
 	// hal plane
-	ObjPlane *hal = new ObjPlane(Vector3(0, 0, 1), Vector2(100, 100), 0);
+	ObjPlane *hal = new ObjPlane(Vector3(0, 0, 1), Vector2(10, 10), 0);
 	hal->mat.set_texture(get_texture("data/img/hal1.jpg"), TEXTYPE_DIFFUSE);
 	scene->add_object(hal);
 }
@@ -45,18 +51,19 @@ IntroPart::~IntroPart() {
 }
 
 #define MIN(a, b)	((a) < (b) ? (a) : (b))
+#define MAX(a, b)	((a) > (b) ? (a) : (b))
 
 void IntroPart::draw_part() {
 	static unsigned long ptime, prev_ptime;
 	float t = (float)time / 1000.0;
 	scene->render(time);
 
-	ptime = (time % pulse_dur);
-	if(ptime < pulse_dur) {
+	ptime = time % pulse_dur;
+	//if(ptime < pulse_dur) {
 		float start = (float)ptime / pulse_dur;
-		float end = MIN((float)(ptime + pulse_dur / 5) / pulse_dur, 1.0);
-		rend_mlapse->render_segm(start, end);
-	}
+		float end = (float)(ptime + pulse_width) / pulse_dur;
+		rend_mlapse->render_segm(start, MIN(end, (1.0 - small_number)));
+	//}
 
 	/*
 	ptime = time % pulse_dur * 4;

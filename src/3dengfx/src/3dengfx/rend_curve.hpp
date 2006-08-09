@@ -33,7 +33,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class RendCurve : public XFormNode {
 private:
 	Curve *curve;
-	Material mat;
 
 	scalar_t width;
 	BlendingFactor src_blend, dst_blend;
@@ -41,6 +40,8 @@ private:
 	int detail;
 
 public:
+	Material mat;
+
 	RendCurve(Curve *curve = 0);
 
 	void set_curve(Curve *curve);

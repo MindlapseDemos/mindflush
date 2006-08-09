@@ -48,11 +48,7 @@ bool init() {
 	fxwt::set_button_handler(bn_handler);
 	atexit(clean_up);
 
-	clear(0);
-	fxwt::set_font_size(35);
-	fxwt::set_font(fxwt::FONT_SERIF);
-	fxwt::print_text("Mindlapse :: Evoke 2006", Vector2(0.25, 0.45), 0.08);
-	fxwt::print_text("Loading...", Vector2(0.1, 0.90), 0.06, Color(0.2, 0.3, 0.9));
+	dsys::overlay(get_texture("data/img/loading.jpg"), Vector2(0, 0), Vector2(1, 1), 1.0);
 	flip();
 
 	set_scene_data_path("data/img");

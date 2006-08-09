@@ -63,7 +63,7 @@ void flip();
 void load_xform_matrices();
 void draw(const VertexArray &varray);
 void draw(const VertexArray &varray, const IndexArray &iarray);
-void draw_line(const Vertex &v1, const Vertex &v2, scalar_t w1, scalar_t w2 = -1.0);
+void draw_line(const Vertex &v1, const Vertex &v2, scalar_t w1, scalar_t w2 = -1.0, const Color &col = 1.0);
 void draw_point(const Vertex &pt, scalar_t size);
 void draw_scr_quad(const Vector2 &corner1, const Vector2 &corner2, const Color &color = Color(1.0), bool reset_xform = true);
 
