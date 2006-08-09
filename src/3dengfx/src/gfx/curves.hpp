@@ -49,6 +49,10 @@ protected:
 	scalar_t parametrize(scalar_t t) const;
 	scalar_t ease(scalar_t t) const;
 
+	Vector3 (*xform_cv)(const Vector3 &pt);
+	
+	virtual Vector3 interpolate(scalar_t t) const = 0;
+
 public:
 	std::string name;
 
@@ -64,43 +68,52 @@ public:
 	virtual void set_ease_curve(Curve *curve);
 	virtual void set_ease_sample_count(int count);
 
-	virtual Vector3 interpolate(scalar_t t) const = 0;
 	virtual Vector3 operator ()(scalar_t t) const;
+
+	virtual void set_xform_func(Vector3 (*func)(const Vector3&));
 
 	friend bool save_curve(const char *fname, const Curve *curve);
 };
 
 class BSpline : public Curve {
+protected:
+	virtual Vector3 interpolate(scalar_t t) const;
+
 public:
 	virtual int get_segment_count() const;
-	virtual Vector3 interpolate(scalar_t t) const;
 };
 
 typedef BSpline	BSplineCurve;
 
 
 class CatmullRomSpline : public Curve {
+protected:
+	virtual Vector3 interpolate(scalar_t t) const;
+
 public:
 	virtual int get_segment_count() const;
-	virtual Vector3 interpolate(scalar_t t) const;
 };
 
 typedef CatmullRomSpline CatmullRomSplineCurve;
 
 
 class BezierSpline : public Curve {
+protected:
+	virtual Vector3 interpolate(scalar_t t) const;
+
 public:
 	virtual int get_segment_count() const;
-	virtual Vector3 interpolate(scalar_t t) const;
 
 	Vector3 get_control_point(int i) const;
 	Vector3 get_tangent(scalar_t t);
 };
 
 class PolyLine : public Curve {
+protected:
+	virtual Vector3 interpolate(scalar_t t) const;
+
 public:
 	virtual int get_segment_count() const;
-	virtual Vector3 interpolate(scalar_t t) const;
 };
 
 bool save_curve(const char *fname, const Curve *curve);

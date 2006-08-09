@@ -184,7 +184,11 @@ void Curve::set_ease_sample_count(int count) {
 }
 
 Vector3 Curve::operator ()(scalar_t t) const {
-	return interpolate(t);
+	return xform_cv ? xform_cv(interpolate(t)) : interpolate(t);
+}
+
+void Curve::set_xform_func(Vector3 (*func)(const Vector3&)) {
+	xform_cv = func;
 }
 
 ///////////////// B-Spline implementation ////////////////////
