@@ -605,22 +605,22 @@ void create_bezier_patch(TriMesh *mesh, const Vector3 *cp, int subdiv)
 	{
 		scalar_t tv = (scalar_t)j / (scalar_t)(vrow - 1);
 		BezierSpline uc;
-		uc.add_control_point(v[0].interpolate(tv));
-		uc.add_control_point(v[1].interpolate(tv));
-		uc.add_control_point(v[2].interpolate(tv));
-		uc.add_control_point(v[3].interpolate(tv));
+		uc.add_control_point(v[0](tv));
+		uc.add_control_point(v[1](tv));
+		uc.add_control_point(v[2](tv));
+		uc.add_control_point(v[3](tv));
 		
 		for (unsigned long i=0; i<vrow; i++)
 		{
 			scalar_t tu = (scalar_t)i / (scalar_t)(vrow - 1);
 			BezierSpline vc;
-			vc.add_control_point(u[0].interpolate(tu));
-			vc.add_control_point(u[1].interpolate(tu));
-			vc.add_control_point(u[2].interpolate(tu));
-			vc.add_control_point(u[3].interpolate(tu));
+			vc.add_control_point(u[0](tu));
+			vc.add_control_point(u[1](tu));
+			vc.add_control_point(u[2](tu));
+			vc.add_control_point(u[3](tu));
 
 			// get the position
-			Vector3 pos = uc.interpolate(tu);
+			Vector3 pos = uc(tu);
 
 			// get normal
 			Vector3 tan_u,tan_v;
