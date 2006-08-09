@@ -63,7 +63,8 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
 
 	blobj = new Object;
 	blobj->set_dynamic(true);
-	blobj->mat.diffuse_color = Color(0.074, 0.52, 0.83);
+	//blobj->mat.diffuse_color = Color(0.074, 0.52, 0.83);
+	blobj->mat.diffuse_color = Color(0.926, 0.58, 0.27);
 	blobj->mat.specular_color = 1.0;
 	blobj->mat.specular_power = 60.0;
 	blobj->set_gfx_program(gfx_prog);
