@@ -24,8 +24,13 @@ static float eval_func(const Vector3 &vec, float t);
 
 float foo = 0.0;
 
+extern float tunnel_duration;
+
+static float fousk;
+
 BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
 	scene->set_ambient_light(Color(0.1, 0.1, 0.1));
+	scene->set_auto_clear(false);
 
 	for(int i=0; i<bcount; i++) {
 		char objname[] = "Sphere0x";
@@ -40,6 +45,7 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
 	}
 
 	Camera *cam = scene->get_active_camera();
+	cam->set_position(Vector3(0, 0, -20));
 	cam->set_timeline_mode(TIME_WRAP);
 	cam->set_fov(DEG_TO_RAD(30.0));
 
@@ -78,9 +84,12 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
 BoxPart::~BoxPart() {
 }
 
+#define CLAMP(x, a, b)	((x) < (a) ? (a) : ((x) > (b) ? (b) : (x)))
+
 void BoxPart::draw_part() {
 	float t = (float)time / 1000.0;
 	float foo = sin(t / 2.0) * 0.5 + 0.5;
+	fousk = CLAMP((t - tunnel_duration - 4.0) / 2.0, 0.0, 1.0);
 	update_blobs(time);
 	
 	sf->triangulate(&blobj->mesh, iso_val, t * 0.75, true);
@@ -93,15 +102,24 @@ void BoxPart::draw_part() {
 
 	//sf_flat->triangulate(&blob_art->mesh, iso_val, t, true);
 	//blob_art->mesh.invert_winding();
-	
+
+
+	// set position of the blobs
+	float start = -50;
+	float end = 0;
+	float param = t < 2 ? t / 2 : 1;
+	Vector3 pos = Vector3(0, 0, lerp(start, end, param));
+	blobj->set_position(pos);
+
 	scene->render(time);
 	//blobj->render(time);
 }
 
 
 static void update_blobs(unsigned long time) {
+	float t = (float)time / 1000.0;
 	for(int i=0; i<bcount; i++) {
-		blob[i].pos = blob[i].xflink->get_position(time);
+		blob[i].pos = blob[i].xflink->get_position(time) * lerp(0.8, 1.0, fousk);
 	}
 }
 
@@ -111,12 +129,12 @@ static float eval_func(const Vector3 &vec, float t) {
 		val += blob[i].energy / (vec - blob[i].pos).length_sq();
 	}
 
-	val += 1.0 / SQ(vec.x - wall_dist);
-	val += 1.0 / SQ(vec.x + wall_dist);
-	val += 1.0 / SQ(vec.y - wall_dist);
-	val += 1.0 / SQ(vec.y + wall_dist);
-	val += 1.0 / SQ(vec.z - wall_dist);
-	val += 1.0 / SQ(vec.z + wall_dist);
+	val += fousk / SQ(vec.x - wall_dist);
+	val += fousk / SQ(vec.x + wall_dist);
+	val += fousk / SQ(vec.y - wall_dist);
+	val += fousk / SQ(vec.y + wall_dist);
+	val += fousk / SQ(vec.z - wall_dist);
+	val += fousk / SQ(vec.z + wall_dist);
 	
 	return val;
 }

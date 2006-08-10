@@ -14,7 +14,9 @@
 #0 fx flash 3000 500 <0,0,1>
 #0 fx neg 1s 9s
 #0 fx overlay 5s 9s t0 sdr/disp_p.glsl
-#0 fx overlay 5s 4s t0 sdr/slide_p.glsl
+#0 fx overlay 0s 4s t0 sdr/slide_p.glsl
+
+#0 fx overlay 10s 10s t0 sdr/disp_p.glsl
 
 # ------------------------------------------
 #0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
@@ -22,8 +24,15 @@
 
 #0s		start_part	intro
 #0s		set_rtarget	intro t0
-0s		start_part	plat
-100000s end_part	intro
+
+#0s		rename_part tunnel  0tunnel
+#0s		start_part	0tunnel
+#0s		start_part	box
+#10s		end_part	0tunnel
+#10s		set_rtarget	box	t0
+#100000s end_part	intro
+
+0s start_part plat
 100000s end.
 
 # -----------------
