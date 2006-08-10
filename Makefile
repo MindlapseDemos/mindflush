@@ -1,10 +1,11 @@
-obj := src/mlapse.o src/events.o\
+obj := src/mlapse.o src/events.o src/sdlvf.o\
 	src/p_box.o src/p_plat.o src/p_intro.o
 bin := mlapse
 eng_dir=src/3dengfx
 
+CFLAGS := -O3 -std=c89 -pedantic -Wall `sdl-config --cflags`
 CXXFLAGS := -g -ansi -pedantic -Wall -Isrc -I$(eng_dir)/src `$(eng_dir)/3dengfx-config --cflags`
-LIBS := `$(eng_dir)/3dengfx-config --libs-no-3dengfx`
+LIBS := `$(eng_dir)/3dengfx-config --libs-no-3dengfx` -lvorbisfile
 
 $(bin): $(obj) $(eng_dir)/lib3dengfx.a
 	$(CXX) -o $@ $(obj) $(eng_dir)/lib3dengfx.a $(LIBS)

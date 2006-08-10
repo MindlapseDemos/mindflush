@@ -7,6 +7,7 @@
 #include "dsys/demosys.hpp"
 #include "events.h"
 #include "demo_parts.h"
+#include "sdlvf.h"
 
 using namespace std;
 
@@ -17,11 +18,31 @@ void update_gfx();
 ntimer timer;
 fps_counter fps;
 
+bool play_music = false;	// XXX: change this before release :)
+const char *music_fname = "data/thom_ml02.ogg";
+
 vector<dsys::Part*> parts;
 
 static const char *title_str = "Mindlapse - Evoke 2006 Demo";
 
 int main(int argc, char **argv) {
+	for(int i=1; i<argc; i++) {
+		if(argv[i][0] == '-' && argv[i][2] == 0) {
+			switch(argv[i][1]) {
+			case 'm':
+				play_music = !play_music;
+				break;
+
+			default:
+				cerr << "invalid option: " << argv[i] << endl;
+				return EXIT_FAILURE;
+			}
+		} else {
+			cerr << "unexpected argument: " << argv[i] << endl;
+			return EXIT_FAILURE;
+		}
+	}
+
 	if(!init()) {
 		return -1;
 	}
@@ -63,11 +84,9 @@ bool init() {
 	dsys::start_demo();
 
 	// start music
-	/*
-	if(sdlvf_init(music_fname) != SDLVF_PLAYING) {
+	if(play_music && sdlvf_init(music_fname) != SDLVF_PLAYING) {
 		error("could not open music: %s", music_fname);
 	}
-	*/
 
 	timer_reset(&timer);
 	timer_start(&timer);
@@ -77,7 +96,7 @@ bool init() {
 }
 
 void update_gfx() {
-	// sdlvf_check();
+	if(play_music) sdlvf_check();
 	
 	if(dsys::update_graphics() == -1) exit(0);
 

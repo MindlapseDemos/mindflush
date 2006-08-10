@@ -16,9 +16,13 @@
 #0 fx overlay 5s 9s t0 sdr/disp_p.glsl
 #0 fx overlay 5s 4s t0 sdr/slide_p.glsl
 
-#parts: box
+# ------------------------------------------
+#0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
+#0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
 
-0s		start_part	intro
+#0s		start_part	intro
+#0s		set_rtarget	intro t0
+0s		start_part	plat
 100000s end_part	intro
 100000s end.
 

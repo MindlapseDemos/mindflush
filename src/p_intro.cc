@@ -1,6 +1,6 @@
 #include "p_intro.h"
 
-#define MLCURVE 	"data/curves/mlapse.curve"
+#define MLCURVE 	"data/curves/ml1.curve"
 
 static Vector3 curve_xform(const Vector3 &pt);
 
@@ -9,7 +9,7 @@ static RendCurve *rend_mlapse;
 static ParticleSystem *mlpsys;
 static Fuzzy orig_birth_rate;
 
-static const int pulse_dur = 2000;
+static const int pulse_dur = 1800;
 static const float compl_time = 10.0;
 
 static float t;
@@ -29,7 +29,7 @@ IntroPart::IntroPart() : ScenePart("intro", (Scene*)0) {
 	rend_mlapse->set_width(0.75);
 	rend_mlapse->get_material_ptr()->diffuse_color = Color(56.0 / 255.0, 1.0, 75.0 / 255.0);
 	rend_mlapse->set_blending_mode(BLEND_ONE, BLEND_ONE);
-	rend_mlapse->get_material_ptr()->set_texture(get_texture("data/img/pulse.png"), TEXTYPE_DIFFUSE);
+	rend_mlapse->get_material_ptr()->set_texture(get_texture("data/img/pulse2.png"), TEXTYPE_DIFFUSE);
 
 	mlpsys = new ParticleSystem;
 	if(!psys::load_particle_sys_params("data/psys/mlapse.psys", mlpsys->get_params())) {
@@ -57,12 +57,16 @@ void IntroPart::draw_part() {
 	static unsigned long ptime, prev_ptime;
 	t = (float)time / 1000.0;
 	scene->render(time);
+	//rend_mlapse->render();
+
+	float progr = MIN(t / compl_time, 1.0);
 
 	ptime = (time % pulse_dur);
 	if(ptime < pulse_dur) {
 		float start = (float)ptime / pulse_dur;
 		float end = MIN((float)(ptime + pulse_dur / 5) / pulse_dur, 1.0);
 		rend_mlapse->render_segm(start, end);
+		//rend_mlapse->render_segm(lerp(start, 0.0, progr), lerp(end, 1.0, progr));
 	}
 
 	/*
@@ -81,14 +85,23 @@ void IntroPart::draw_part() {
 	*/
 }
 
-static float psin(float x) {
-	return (sin(x) + 1.0) / 2.0;
+inline static float psin(float x) {
+	return sin(x) * 0.5 + 0.5;
+}
+
+inline static float pcos(float x) {
+	return cos(x) * 0.5 + 0.5;
 }
 
 static Vector3 curve_xform(const Vector3 &pt) {
 	float progr = MIN(t / compl_time, 1.0);
-	float p = (psin(t * 10.0 *pt.x ) + psin(cos(pt.x) + t * 13.0)) / 2.0;
-	p *= psin(cos(pt.x / 10.0 + t) * 5.0);
-	p = lerp(p, 1.0, progr);
-	return Vector3(pt.x, pt.y * p, pt.z);
+	
+	float scale = (psin(t * 10.0 * pt.x) + psin(cos(pt.x) + t * 13.0)) / 2.0;
+	scale *= psin(cos(pt.x / 10.0 + t) * 5.0) * 3.0;
+	scale = lerp(scale, 1.0, progr);
+
+	float trans = 10.0 * (cos(t + sin(pt.x / 6.0)) + sin(t * 2.0) / 2.0);
+	trans = lerp(trans, 1.0, progr);
+
+	return Vector3(pt.x, pt.y * scale + trans, pt.z);
 }
