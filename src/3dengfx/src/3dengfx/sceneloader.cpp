@@ -320,11 +320,12 @@ static bool load_material(Lib3dsFile *file, const char *name, Material *mat) {
 		add_texture(cube_tex);
 
 		mat->set_texture(cube_tex, TEXTYPE_ENVMAP);
+		mat->auto_refl_upd = m->autorefl_map.frame_step;
 		if(m->autorefl_map.flags & LIB3DS_READ_FIRST_FRAME_ONLY ||
 			m->autorefl_map.flags & 0x8 || m->autorefl_map.frame_step == 1000) {
-			mat->auto_refl = false;
+			mat->auto_refl = true;
+			mat->auto_refl_upd = 0;
 		}
-		mat->auto_refl_upd = m->autorefl_map.frame_step;
 	}
 		
 
