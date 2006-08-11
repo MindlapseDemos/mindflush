@@ -41,7 +41,6 @@ PlatPart::PlatPart() : ScenePart("plat", "data/geom/6plat.3ds") {
 
 	mirror_cam = new TargetCamera(mir_pos, mir_targ);
 	mirror_cam->flip(false, true, false);
-	mirror_cam->zoom(0.74);
 	//scene->add_camera(mirror_cam);
 
 	scene->set_auto_clear(false);
@@ -83,7 +82,7 @@ void PlatPart::draw_part() {
 	glDisable(GL_STENCIL_TEST);
 	scene->render(time);
 */
-	scene->render(time);
+	scene->render(0);
 
 	/*for(size_t i=0; i<vines.size(); i++) {
 		vines[i]->render_segm(0.0, (t * 0.25) > 1.0 ? 1.0 : (t * 0.25));

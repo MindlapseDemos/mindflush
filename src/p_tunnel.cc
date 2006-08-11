@@ -19,7 +19,7 @@ TunnelPart::TunnelPart() : ScenePart("tunnel", (Scene*)0) {
 	tplane->set_zwrite(false);
 	tplane->set_blending(true);
 	//tplane->set_blending_mode(BLEND_SRC_ALPHA, BLEND_ONE_MINUS_SRC_ALPHA);
-	//tplane->set_blending_mode(BLEND_SRC_ALPHA, BLEND_ONE);
+	tplane->set_blending_mode(BLEND_SRC_ALPHA, BLEND_ONE);
 	//tplane->set_handle_blending(false);
 
 	// setup shaders
@@ -41,6 +41,7 @@ TunnelPart::~TunnelPart() {
 
 void TunnelPart::draw_part() {
 	float t = (float)time / 1000.0;
+
 	scene->render();
 
 	// render planes
@@ -49,6 +50,7 @@ void TunnelPart::draw_part() {
 	{
 		the_offs = fmod(the_offs, plane_interval);
 	}
+
 	for (int i=0; i<num_planes; i++)
 	{
 		float offs = i * plane_interval + the_offs;
@@ -58,6 +60,7 @@ void TunnelPart::draw_part() {
 		float depth = pos / farthest;
 		float xmot = 125.0 * (sin(t * 1.5 + depth) + cos(t * 2.0 + depth) * 0.6) * depth;
 		float ymot = 125.0 * (cos(t * 1.5 + depth) + sin(t * 2.0 + depth) * 0.6) * depth;
+
 		tplane->set_position(Vector3(xmot, ymot, pos));
 		tplane->render();
 	}

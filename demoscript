@@ -22,17 +22,32 @@
 #0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
 #0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
 
+#0 fx overlay 0s 10s t0 sdr/radial2_p.glsl
+
+0s start_part dcurve 
+
+
 #0s		start_part	intro
+#2s end_part intro
 #0s		set_rtarget	intro t0
+
+
+#0s		rename_part	dcurve	zdcurve
+#0s		start_part	dcurve
+#1s		end_part	dcurve
 
 #0s		rename_part tunnel  0tunnel
 #0s		start_part	0tunnel
+#0s		set_rtarget 0tunnel t0
 #0s		start_part	box
+#0s		set_rtarget box t0
 #10s		end_part	0tunnel
+#10s		set_rtarget box fb
+#12s		start_part	zdcurve
 #10s		set_rtarget	box	t0
 #100000s end_part	intro
 
-0s start_part plat
+#0s start_part plat
 100000s end.
 
 # -----------------
