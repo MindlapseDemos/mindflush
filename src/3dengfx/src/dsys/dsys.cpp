@@ -153,21 +153,16 @@ void dsys::remove_part(Part *part) {
 void dsys::start_part(Part *part) {
 	running[part->get_name()] = part;
 	part->start();
-
-	info("%s: START PART !!!!!!!!", part->get_name());
 }
 
 void dsys::stop_part(Part *part) {
 	part->stop();
-	PartTree::iterator iter = parts.find(part->get_name());
+	PartTree::iterator iter = running.find(part->get_name());
 	if(iter != running.end()) {
 		running.erase(iter);
-		info("aalalalalalalala");
 	} else {
 		error("stop_part() called for unknown part: %s\n", part->get_name());
 	}
-
-	info("%s: STOP PART !!!!!!!!", part->get_name());
 }
 
 Part *dsys::get_part(const char *pname) {
