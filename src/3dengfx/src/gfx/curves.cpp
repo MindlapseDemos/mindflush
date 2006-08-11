@@ -37,6 +37,7 @@ Curve::Curve() {
 	arc_parametrize = false;
 	ease_curve = 0;
 	samples = 0;
+	xform_cv = 0;
 
 	set_ease_sample_count(100);
 }

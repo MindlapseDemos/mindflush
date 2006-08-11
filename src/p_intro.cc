@@ -55,7 +55,7 @@ IntroPart::~IntroPart() {
 
 void IntroPart::draw_part() {
 	static unsigned long ptime, prev_ptime;
-	t = (float) time / 1000.0;
+	t = (float)time / 1000.0;
 	scene->render(time);
 	//rend_mlapse->render();
 
