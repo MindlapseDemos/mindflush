@@ -1,0 +1,28 @@
+psize:			1200.0
+#psize-r:		0.0
+
+life:			1.8
+#life-r:		0.0
+
+birth-rate:		50
+birth-rate-r:	25.0
+
+grav:			0, 0.008, 0
+
+shoot:			0, 0.0, 0
+shoot-r:		0.5, 0.5, 0.5
+
+friction:		0.97
+
+spawn_off:		0, 0, 0
+spawn_off-r:	10, 10, 10
+
+tex:			data/img/waterfall010002.png
+
+color_start:	1, 0.78, 0.2, 1
+color_end:		1, 0.27, 0.2, 0.25
+
+#halo:			data/sq_star.png
+#halo_size:		5
+
+big_particles: true

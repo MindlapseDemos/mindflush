@@ -1,0 +1,14 @@
+psize: 500.0
+life: 2
+birth-rate: 300.0
+grav: 0, -0.01, 0
+shoot-r: 1, 1, 1
+friction: 0.98
+#spawn_off-r: 1.0, 1.0, 1.0
+tex: data/img/psys03.png
+color_start: 1.0, 0.2, 0.3, 1.0
+color_end: 0.3, 0.2, 1.0, 0.1
+halo: data/img/psys03.png
+halo_size: 1200
+halo_rot: 1.0
+big_particles: true
