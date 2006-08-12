@@ -36,17 +36,6 @@ CylPart::CylPart() : dsys::ScenePart("cyl", (Scene*)0) {
 
 	cyl->set_gfx_program(prog);
 
-	glext::glActiveTexture(GL_TEXTURE0);
-	set_texture(0, get_texture("data/img/metal.jpg"));
-	prog->set_parameter("tex_dif", 0);
-	glext::glActiveTexture(GL_TEXTURE1);
-	set_texture(1, get_texture("data/img/refmap2.png"));
-	prog->set_parameter("tex_env", 1);
-
-	glext::glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glext::glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 CylPart::~CylPart() {
@@ -59,6 +48,7 @@ CylPart::~CylPart() {
 
 void CylPart::draw_part() {
 	float t = (float)time / 1000.0;
+
 
 	unsigned int vcount = cyl->get_mesh_ptr()->get_vertex_array()->get_count();
 	Vertex *vptr = cyl->get_mesh_ptr()->get_mod_vertex_array()->get_mod_data();
@@ -85,5 +75,18 @@ void CylPart::draw_part() {
 	float cyl_x = sin(MIN(half_pi * t / in_dur, half_pi)) * 85.0;
 	cyl->set_position(Vector3(cyl_x - 60.0, 0, 0));
 
+	glext::glActiveTexture(GL_TEXTURE0);
+	set_texture(0, get_texture("data/img/metal.jpg"));
+	prog->set_parameter("tex_dif", 0);
+	glext::glActiveTexture(GL_TEXTURE1);
+	set_texture(1, get_texture("data/img/refmap2.png"));
+	prog->set_parameter("tex_env", 1);
+
 	scene->render(0);
+
+	glext::glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glext::glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }

@@ -515,6 +515,15 @@ bool start_gl() {
 }
 
 void destroy_graphics_context() {
+	static bool destroy_called_again = false;
+
+	if(destroy_called_again) {
+		warning("Multiple destroy_graphics_context() calls");
+		return;
+	} else {
+		destroy_called_again = true;
+	}
+
 	dsys::clean_up();
 	if(!gc_valid) return;
 	gc_valid = false;

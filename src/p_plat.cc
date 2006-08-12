@@ -4,33 +4,49 @@
 using namespace std;
 using namespace dsys;
 
-static std::vector<RendCurve*> vines;
+static void make_skycube(Scene *scene);
+static void make_psys(Scene *scene);
 
-static Object *ground;
-static TargetCamera *cam, *mirror_cam;
+//static Object *ground;
+static TargetCamera *cam;//, *mirror_cam;
+static XFormNode *targ;
+
+static vector<ParticleSystem*> particles;
 
 PlatPart::PlatPart() : ScenePart("plat", "data/geom/6plat.3ds") {
-	Curve *spline;
-	for(int i=0; i<4; i++) {	
-		char name[16];
-		sprintf(name, "Vine%02d", i + 1);
-		std::cerr << "trying " << name << std::endl;
-		if((spline = scene->get_curve(name))) {
-			spline->set_arc_parametrization(true);
-			RendCurve *rcurve = new RendCurve(spline);
-			rcurve->set_width(0.5);
-			rcurve->mat.diffuse_color = Color(0.2, 0.9, 0.4);
-			rcurve->mat.set_texture(get_texture("data/img/pulse2.png"), TEXTYPE_DIFFUSE);
-			vines.push_back(rcurve);
-			std::cout << "OK\n";//got vine: " << name << std::endl;
-		} else {
-			std::cout << "Not found\n";
+	make_skycube(scene);
+	make_psys(scene);
+
+	cam = (TargetCamera*)scene->get_active_camera();
+	cam->set_clipping_plane(50000, CLIP_FAR);
+	cam->set_position(Vector3(0, 0, 0));
+	cam->target.set_position(Vector3(0, 0, 0));
+	cam->set_fov(DEG_TO_RAD(55.0));
+
+	Object *dummy = scene->get_object("Sphere01");
+	scene->remove_object(dummy);
+
+	dummy->children.push_back(targ);
+	cam->target.parent = dummy;
+
+	GfxProg *phong_prog = new GfxProg(get_shader("sdr/phong_v.glsl", PROG_VERTEX), get_shader("sdr/phong2_p.glsl", PROG_PIXEL));
+	phong_prog->link();
+	if(!phong_prog->is_linked()) {
+		exit(0);
+	}
+
+	std::list<Object*> *objlist = scene->get_object_list();
+	std::list<Object*>::iterator iter = objlist->begin();
+	while(iter != objlist->end()) {
+		Object *obj = *iter++;
+		if(obj->mat.name == "01 - Default") {
+			obj->set_gfx_program(phong_prog);
 		}
 	}
 
+	/*
 	ground = scene->get_object("Plane01");
-	//scene->remove_object(ground);
-
+	scene->remove_object(ground);
 	cam = (TargetCamera*)scene->get_active_camera();
 
 	Vector3 cam_pos = cam->get_position(0);
@@ -41,21 +57,30 @@ PlatPart::PlatPart() : ScenePart("plat", "data/geom/6plat.3ds") {
 
 	mirror_cam = new TargetCamera(mir_pos, mir_targ);
 	mirror_cam->flip(false, true, false);
-	//scene->add_camera(mirror_cam);
+	scene->add_camera(mirror_cam);
+	*/
 
 	scene->set_auto_clear(false);
 }
 
 PlatPart::~PlatPart() {
-	for(size_t i=0; i<vines.size(); i++) {
-		delete vines[i];
+	for(size_t i=0; i<particles.size(); i++) {
+		delete particles[i];
 	}
+	particles.clear();
 }
 
 void PlatPart::draw_part() {
-//	float plane_eq = {};
-	float t = (float)time / 1000.0;
+	scene->render(time);// * 0.7);
+
+	psys::set_global_time(time);
+	for(int i=0; i<particles.size(); i++) {
+		particles[i]->update();
+		particles[i]->draw();
+	}
+
 /*
+//	float plane_eq = {};
 	cam->activate(time);
 	scene->setup_lights();
 
@@ -82,10 +107,88 @@ void PlatPart::draw_part() {
 	glDisable(GL_STENCIL_TEST);
 	scene->render(time);
 */
-	scene->render(0);
 
 	/*for(size_t i=0; i<vines.size(); i++) {
 		vines[i]->render_segm(0.0, (t * 0.25) > 1.0 ? 1.0 : (t * 0.25));
 	}*/
 
+}
+
+
+static void make_skycube(Scene *scene) {
+	const float size = 40000;
+	Object *face[6];
+	Texture *tex[6];
+
+	face[0] = new ObjPlane(Vector3(0, -1, 0), Vector2(size, size), 0);
+	face[0]->translate(Vector3(0, size / 2, 0));
+	tex[0] = get_texture("data/img/py.jpg");
+	
+	face[1] = new ObjPlane(Vector3(0, 1, 0), Vector2(size, size), 0);
+	face[1]->translate(Vector3(0, -size / 2, 0));
+	tex[1] = get_texture("data/img/ny.jpg");
+
+	face[2] = new ObjPlane(Vector3(0, 0, -1), Vector2(size, size), 0);
+	face[2]->translate(Vector3(0, 0, size / 2));
+	tex[2] = get_texture("data/img/pz.jpg");
+	
+	face[3] = new ObjPlane(Vector3(0, 0, 1), Vector2(size, size), 0);
+	face[3]->translate(Vector3(0, 0, -size / 2));
+	tex[3] = get_texture("data/img/nz.jpg");
+
+	face[4] = new ObjPlane(Vector3(-1, 0, 0), Vector2(size, size), 0);
+	face[4]->translate(Vector3(size / 2, 0, 0));
+	tex[4] = get_texture("data/img/px.jpg");
+	
+	face[5] = new ObjPlane(Vector3(1, 0, 0), Vector2(size, size), 0);
+	face[5]->translate(Vector3(-size / 2, 0, 0));
+	tex[5] = get_texture("data/img/nx.jpg");
+
+	for(int i=0; i<6; i++) {
+		Material *mat = face[i]->get_material_ptr();
+		mat->emissive_color = 1.0;
+		//add_texture(tex[i]);
+		if(i != 1) {
+			mat->set_texture(tex[i], TEXTYPE_DIFFUSE);
+			face[i]->set_texture_addressing(TEXADDR_CLAMP);
+			scene->add_object(face[i]);
+		}
+	}
+}
+
+static void make_psys(Scene *scene) {
+	MotionController ctrl;
+	ParticleSystem *ps;
+	// ---- fire ----
+	ps = new ParticleSystem;
+	if(!psys::load_particle_sys_params("data/psys/fire.psys", ps->get_params())) {
+		exit(0);
+	}
+	ps->set_position(Vector3(0, 35, 71));
+	//scene->add_particle_sys(ps);
+	particles.push_back(ps);
+
+	// ---- magic (red) ----
+	ps = new ParticleSystem;
+	if(!psys::load_particle_sys_params("data/psys/red.psys", ps->get_params())) {
+		exit(0);
+	}
+	ps->set_position(Vector3(0, 80.0, 0));
+	//scene->add_particle_sys(ps);
+	particles.push_back(ps);
+
+	ctrl = MotionController(CTRL_SIN, TIME_FREE);
+	ctrl.set_control_axis(CTRL_X);
+	ctrl.set_sin_func(1.0, 100.0);
+	ps->add_controller(ctrl, CTRL_TRANSLATION);
+
+	ctrl = MotionController(CTRL_COS, TIME_FREE);
+	ctrl.set_control_axis(CTRL_Z);
+	ctrl.set_sin_func(1.5, 75.0);
+	ps->add_controller(ctrl, CTRL_TRANSLATION);
+
+	ctrl = MotionController(CTRL_SIN, TIME_FREE);
+	ctrl.set_control_axis(CTRL_Y);
+	ctrl.set_sin_func(1.8, 20.0);
+	ps->add_controller(ctrl, CTRL_TRANSLATION);
 }

@@ -26,15 +26,22 @@
 # ---------------------------------
 
 # ----- Intro - logo --------------
-0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
-0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
-0 fx overlay 11000 1500 data/img/haltext1.png sdr/radial3_p.glsl
-0 fx overlay 12500 1100 data/img/haltext2.png sdr/radial3_p.glsl
-0 fx overlay 13600 900 data/img/haltext3.png sdr/radial3_p.glsl
-0 fx overlay 14500 7500 data/img/logo.jpg sdr/disp2_p.glsl
-0s		start_part	intro
-0s		set_rtarget	intro t0
-10750	end_part	intro
+#0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
+#0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
+#0 fx overlay 11000 1500 data/img/haltext1.png sdr/radial3_p.glsl
+#0 fx overlay 12500 1100 data/img/haltext2.png sdr/radial3_p.glsl
+#0 fx overlay 13600 900 data/img/haltext3.png sdr/radial3_p.glsl
+#0 fx overlay 14500 7500 data/img/logo.jpg sdr/disp2_p.glsl
+#0s		start_part	intro
+#0s		set_rtarget	intro t0
+#10750	end_part	intro
+# ---------------------------------
+
+
+# ------ Platonic Solids ----------
+0s		start_part	plat
+20s		end_part	plat
+# TODO: at -2 start the tunnel
 # ---------------------------------
 
 # ------ Tunnel - metaballs -------
@@ -48,7 +55,7 @@
 #18s		start_part	zdcurve
 #28s		end_part 	zdcurve
 #30s		end_part	box
-# TODO: at 30 - 2 start a 2 sec transition ...
+# TODO: at -2 start a 2 sec transition ...
 # ---------------------------------
 
 

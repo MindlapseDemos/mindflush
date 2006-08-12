@@ -401,9 +401,10 @@ void XFormNode::reset_xform(unsigned long time) {
 #define MAX(a, b)	((a) > (b) ? (a) : (b))
 
 PRS XFormNode::get_prs(unsigned long time) const {
-	if(cache.valid && time == cache.time) {
+	/*if(cache.valid && time == cache.time) {
 		return cache.prs;
 	}
+	*/
 	cache.valid = true;
 	cache.time = time;
 

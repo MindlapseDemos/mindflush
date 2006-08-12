@@ -106,6 +106,15 @@ void update_gfx() {
 }
 
 void clean_up() {
+	static bool clean_up_called = false;
+
+	if(clean_up_called) {
+		warning("Multiple clean_up() calls");
+		return;
+	} else {
+		clean_up_called = true;
+	}
+
 	for(size_t i=0; i<parts.size(); i++) {
 		delete parts[i];
 	}

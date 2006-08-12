@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <iostream>
 #include <list>
 #include <vector>
+#include <algorithm>
 
 template <class KeyT, class ValT> 
 struct Pair {
@@ -76,9 +77,14 @@ template <class KeyType, class ValType>
 HashTable<KeyType, ValType>::~HashTable() {
 	for(unsigned long i=0; i<size; i++) {
 		if(data_destructor) {
+			std::list<ValType> hacklist;
+
 			typename std::list<Pair<KeyType, ValType> >::iterator iter = table[i].begin();
 			while(iter != table[i].end()) {
-				data_destructor((iter++)->val);
+				if(std::find(hacklist.begin(), hacklist.end(), iter->val) == hacklist.end()) {
+					hacklist.push_back(iter->val);
+					data_destructor((iter++)->val);
+				}
 			}
 		}
 			

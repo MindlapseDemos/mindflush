@@ -41,7 +41,9 @@ static HashTable<string, Texture*> *textures;
 static Texture *normal_cubemap;
 
 static void delete_texture(Texture *tex) {
-	delete tex;
+	glDeleteTextures(1, &tex->tex_id);
+	glGetError();
+	//delete tex;
 }
 
 static void init_tex_man() {
@@ -112,6 +114,15 @@ Texture *get_texture(const char *fname) {
 
 
 void destroy_textures() {
+	static bool called_again = false;
+
+	if(called_again) {
+		warning("Multiple destroy_textures() calls");
+		return;
+	} else {
+		called_again = true;
+	}
+
 	info("Shutting down texture manager, destroying all textures...");
 	delete textures;
 	textures = 0;
