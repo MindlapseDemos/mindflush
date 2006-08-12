@@ -7,7 +7,7 @@ static const int num_planes = 40;
 static const float plane_interval = 15.0;
 static const float farthest = num_planes * plane_interval;
 
-float tunnel_duration = 5.0;
+float tunnel_duration = 8.0;
 
 TunnelPart::TunnelPart() : ScenePart("tunnel", (Scene*)0) {
 	scene = new Scene;

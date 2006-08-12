@@ -11,7 +11,7 @@ const static int bcount = 4;
 static Blob blob[bcount];
 
 static ScalarField *sf, *sf_flat;
-static const int grid = 26;
+static const int grid = 24;
 static const float fieldsz = 11.3;
 static const float wall_dist = 6.75;
 static const float iso_val = 0.8;
@@ -66,6 +66,10 @@ BoxPart::BoxPart() : ScenePart("box", "data/geom/cube-traj.3ds") {
 	Shader phong_vertex = get_shader("sdr/phong_v.glsl", PROG_VERTEX);
 	if(!phong_pixel || !phong_vertex) exit(EXIT_FAILURE);
 	gfx_prog = new GfxProg(phong_vertex, phong_pixel);
+	gfx_prog->link();
+	if(!gfx_prog->is_linked()) {
+		exit(0);
+	}
 
 	blobj = new Object;
 	blobj->set_dynamic(true);
@@ -89,7 +93,7 @@ BoxPart::~BoxPart() {
 void BoxPart::draw_part() {
 	float t = (float)time / 1000.0;
 	float foo = sin(t / 2.0) * 0.5 + 0.5;
-	fousk = CLAMP((t - tunnel_duration - 4.0) / 2.0, 0.0, 1.0);
+	fousk = CLAMP((t - tunnel_duration - 0.5) / 2.0, 0.0, 1.0);
 	update_blobs(time);
 	
 	sf->triangulate(&blobj->mesh, iso_val, t * 0.75, true);

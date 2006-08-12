@@ -1,6 +1,12 @@
-obj := src/mlapse.o src/events.o src/sdlvf.o\
-	src/p_box.o src/p_plat.o src/p_intro.o src/p_tunnel.o\
-	src/p_dcurve.o
+obj := src/mlapse.o\
+	src/events.o\
+	src/sdlvf.o\
+	src/p_box.o\
+	src/p_plat.o\
+	src/p_intro.o\
+	src/p_tunnel.o\
+	src/p_dcurve.o\
+	src/p_cyl.o
 bin := mlapse
 eng_dir=src/3dengfx
 

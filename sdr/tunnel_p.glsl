@@ -13,7 +13,7 @@ void main()
 	tex_coord.x = 2.0 * tex_coord.x - 1.0;
 	tex_coord.y = 2.0 * tex_coord.y - 1.0;
 	float r = length(tex_coord);
-	float phi = atan2(tex_coord.y , tex_coord.x);
+	float phi = atan(tex_coord.y , tex_coord.x);
 
 	//r += 0.1 * (sin(r * cos(t) * 10.0) + cos(r * sin(t) * 5.0) + sin(t * 3.0));
 

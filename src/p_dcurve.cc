@@ -18,7 +18,7 @@ static float calpha()
 	else if (t >= fade_out)
 	{
 		float ret = 1 - (t - fade_out) / fade_dur;
-		if (ret < 0) ret - 0;
+		if (ret < 0) ret = 0;
 		return ret;
 	}
 	return 1;
@@ -103,6 +103,7 @@ void DCurvePart::draw_part() {
 
 	xoffset = -100;
 	srand(0);
+	set_zbuffering(false);
 	for (int i=0; i< 10; i++)
 	{
 		offset = 200 * frand(1);
@@ -119,5 +120,5 @@ void DCurvePart::draw_part() {
 		mult = frand(2) -1; 
 		rend_curve1->render_segm(0, cparam());
 	}
-
+	set_zbuffering(true);
 }

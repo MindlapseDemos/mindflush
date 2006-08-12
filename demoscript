@@ -19,35 +19,39 @@
 #0 fx overlay 10s 10s t0 sdr/disp_p.glsl
 
 # ------------------------------------------
-#0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
-#0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
 
-#0 fx overlay 0s 10s t0 sdr/radial2_p.glsl
+# ----- always --------------------
+0s		rename_part	dcurve	zdcurve
+0s		rename_part tunnel	0tunnel
+# ---------------------------------
 
-0s start_part dcurve 
+# ----- Intro - logo --------------
+0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
+0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
+0 fx overlay 11000 1500 data/img/haltext1.png sdr/radial3_p.glsl
+0 fx overlay 12500 1100 data/img/haltext2.png sdr/radial3_p.glsl
+0 fx overlay 13600 900 data/img/haltext3.png sdr/radial3_p.glsl
+0 fx overlay 14500 7500 data/img/logo.jpg sdr/disp2_p.glsl
+0s		start_part	intro
+0s		set_rtarget	intro t0
+10750	end_part	intro
+# ---------------------------------
 
-
-#0s		start_part	intro
-#2s end_part intro
-#0s		set_rtarget	intro t0
-
-
-#0s		rename_part	dcurve	zdcurve
-#0s		start_part	dcurve
-#1s		end_part	dcurve
-
-#0s		rename_part tunnel  0tunnel
+# ------ Tunnel - metaballs -------
+#0 fx overlay 0s 13s t0 sdr/radial2_p.glsl
 #0s		start_part	0tunnel
 #0s		set_rtarget 0tunnel t0
-#0s		start_part	box
-#0s		set_rtarget box t0
-#10s		end_part	0tunnel
-#10s		set_rtarget box fb
-#12s		start_part	zdcurve
-#10s		set_rtarget	box	t0
-#100000s end_part	intro
+#4s		start_part	box
+#4s		set_rtarget box t0
+#13s		set_rtarget box fb
+#15s		end_part	0tunnel
+#18s		start_part	zdcurve
+#28s		end_part 	zdcurve
+#30s		end_part	box
+# TODO: at 30 - 2 start a 2 sec transition ...
+# ---------------------------------
 
-#0s start_part plat
+
 100000s end.
 
 # -----------------
