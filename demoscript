@@ -39,13 +39,13 @@
 
 
 # ------ Platonic Solids ----------
-0s		start_part	plat
-20s		end_part	plat
+#0s		start_part	plat
+#20s		end_part	plat
 # TODO: at -2 start the tunnel
 # ---------------------------------
 
 # ------ Tunnel - metaballs -------
-#0 fx overlay 0s 13s t0 sdr/radial2_p.glsl
+#0s fx overlay 0s 13s t0 sdr/radial2_p.glsl
 #0s		start_part	0tunnel
 #0s		set_rtarget 0tunnel t0
 #4s		start_part	box
@@ -58,8 +58,44 @@
 # TODO: at -2 start a 2 sec transition ...
 # ---------------------------------
 
+# ----- Greetings -----------------
+#0s		start_part	greets
+#20s		end_part	greets
+# ---------------------------------
 
-100000s end.
+
+0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
+0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
+0 fx overlay 11000 1500 data/img/haltext1.png sdr/radial3_p.glsl
+0 fx overlay 12500 1100 data/img/haltext2.png sdr/radial3_p.glsl
+0 fx overlay 13600 900 data/img/haltext3.png sdr/radial3_p.glsl
+0 fx overlay 14500 7500 data/img/logo.jpg sdr/disp2_p.glsl
+
+0 fx overlay 42s 11s t0 sdr/radial2_p.glsl
+
+0s		start_part	intro
+0s		set_rtarget	intro t0
+10750	end_part	intro
+
+22s		start_part	plat
+
+40s		start_part	0tunnel
+
+42s		end_part	plat
+
+42s		set_rtarget 0tunnel t0
+44s		start_part	box
+44s		set_rtarget box t0
+53s		set_rtarget box fb
+55s		end_part	0tunnel
+58s		start_part	zdcurve
+68s		end_part 	zdcurve
+70s		end_part	box
+
+70s		start_part	greets
+90s		end_part	greets
+
+90s end.
 
 # -----------------
 # command reference

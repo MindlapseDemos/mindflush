@@ -6,7 +6,8 @@ obj := src/mlapse.o\
 	src/p_intro.o\
 	src/p_tunnel.o\
 	src/p_dcurve.o\
-	src/p_cyl.o
+	src/p_cyl.o\
+	src/p_greets.o
 bin := mlapse
 eng_dir=src/3dengfx
 
