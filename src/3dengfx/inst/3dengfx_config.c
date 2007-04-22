@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "3dengfx_config.h"
+#include <3dengfx_config.h>
 
 #if GFX_LIBRARY == SDL
 #define GFX_CFLAGS	"sdl-config --cflags"

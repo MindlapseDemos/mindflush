@@ -1,0 +1,6 @@
+COMPILATION:
+-----------
+
+- Download libvorbis and libogg: http://www.clanlib.org/download-binaries-win32-vc70.html
+- Add include/lib paths for SDL/ogg/vorbis
+- Build

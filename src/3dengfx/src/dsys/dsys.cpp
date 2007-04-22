@@ -186,6 +186,7 @@ bool dsys::start_demo() {
 	return true;
 }
 
+#define PATH_MAX 2048
 static char curr_dir[PATH_MAX];
 
 bool dsys::render_demo(int fps, const char *out_dir) {
