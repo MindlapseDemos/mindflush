@@ -94,6 +94,14 @@ bool dsys::init() {
 		}
 
 		tex_mat[0].set_scaling(Vector3((float)scrx / (float)next_size_x, (float)scry / (float)next_size_y, 1));
+
+		info("--- dsys texture matrix [%d] ----", 0);
+		info("%.2f %.2f %.2f %.2f", tex_mat[0][0][0], tex_mat[0][0][1], tex_mat[0][0][2], tex_mat[0][0][3]);
+		info("%.2f %.2f %.2f %.2f", tex_mat[0][1][0], tex_mat[0][1][1], tex_mat[0][1][2], tex_mat[0][1][3]);
+		info("%.2f %.2f %.2f %.2f", tex_mat[0][2][0], tex_mat[0][2][1], tex_mat[0][2][2], tex_mat[0][2][3]);
+		info("%.2f %.2f %.2f %.2f", tex_mat[0][3][0], tex_mat[0][3][1], tex_mat[0][3][2], tex_mat[0][3][3]);
+
+		
 		tex_mat[1] = Matrix4x4::identity_matrix;
 		tex_mat[2] = Matrix4x4::identity_matrix;
 		tex_mat[3] = Matrix4x4::identity_matrix;

@@ -8,6 +8,7 @@
 #include "p_dcurve.h"
 #include "p_cyl.h"
 #include "p_greets.h"
+#include "p_credits.h"
 
 #define ADD_ALL_PARTS() {\
 	parts.push_back(new BoxPart);\
@@ -17,6 +18,7 @@
 	parts.push_back(new DCurvePart);\
 	parts.push_back(new CylPart);\
 	parts.push_back(new GreetsPart);\
+	parts.push_back(new CreditsPart);\
 }
 
 #endif	// _DEMO_PARTS_H_

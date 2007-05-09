@@ -174,6 +174,13 @@ void dsys::overlay(Texture *tex, const Vector2 &corner1, const Vector2 &corner2,
 	}
 	
 	if(tex) {
+		for(int i=0; i<4; i++) {
+			if(tex == dsys::tex[i]) {
+				glMatrixMode(GL_TEXTURE);
+				load_matrix_gl(Matrix4x4::identity_matrix);
+				break;
+			}
+		}
 		set_texture_addressing(0, TEXADDR_WRAP, TEXADDR_WRAP);
 		disable_texture_unit(0);
 	}

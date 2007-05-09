@@ -7,7 +7,7 @@
 #include "dsys/demosys.hpp"
 #include "events.h"
 #include "demo_parts.h"
-#include "sdlvf.h"
+//#include "sdlvf.h"
 
 using namespace std;
 
@@ -84,9 +84,9 @@ bool init() {
 	dsys::start_demo();
 
 	// start music
-	if(play_music && sdlvf_init(music_fname) != SDLVF_PLAYING) {
+	/*if(play_music && sdlvf_init(music_fname) != SDLVF_PLAYING) {
 		error("could not open music: %s", music_fname);
-	}
+	}*/
 
 	timer_reset(&timer);
 	timer_start(&timer);
@@ -96,7 +96,7 @@ bool init() {
 }
 
 void update_gfx() {
-	if(play_music) sdlvf_check();
+	//if(play_music) sdlvf_check();
 	
 	if(dsys::update_graphics() == -1) exit(0);
 

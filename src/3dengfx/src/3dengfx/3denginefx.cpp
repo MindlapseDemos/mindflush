@@ -24,10 +24,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "3dengfx_config.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
 #include <iostream>
 #include <list>
-#include <cstdlib>
-#include <csignal>
 #include "opengl.h"
 #include "fxwt/fxwt.hpp"
 #include "fxwt/init.hpp"
@@ -1026,15 +1027,19 @@ void set_render_target(Texture *tex, CubeMapFace cube_map_face) {
 	
 	if(!tex) {
 		rt_stack.pop();
-		if(prev->get_type() == TEX_CUBE) face_stack.pop();
+		if(prev->get_type() == TEX_CUBE) {
+			face_stack.pop();
 
-		if(rt_stack.empty()) {
-			set_viewport(0, 0, gparams.x, gparams.y);
-		} else {
-			set_viewport(0, 0, rt_stack.top()->width, rt_stack.top()->height);
+			if(rt_stack.empty()) {
+				set_viewport(0, 0, gparams.x, gparams.y);
+			} else {
+				set_viewport(0, 0, rt_stack.top()->width, rt_stack.top()->height);
+			}
 		}
 	} else {
-		set_viewport(0, 0, tex->width, tex->height);
+		if(tex->get_type() == TEX_CUBE) {
+			set_viewport(0, 0, tex->width, tex->height);
+		}
 
 		rt_stack.push(tex);
 		if(tex->get_type() == TEX_CUBE) face_stack.push(cube_map_face);

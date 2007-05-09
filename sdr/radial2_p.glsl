@@ -4,7 +4,7 @@ uniform float time;
 #define TC		gl_TexCoord[0].st
 
 float beat(float t) {
-	return fmod(t, 0.5);
+	return mod(t, 0.5);
 }
 
 void main() {
