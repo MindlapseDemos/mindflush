@@ -7,7 +7,7 @@
 #include "dsys/demosys.hpp"
 #include "events.h"
 #include "demo_parts.h"
-//#include "sdlvf.h"
+#include "sdlvf.h"
 
 using namespace std;
 
@@ -18,12 +18,12 @@ void update_gfx();
 ntimer timer;
 fps_counter fps;
 
-bool play_music = false;	// XXX: change this before release :)
-const char *music_fname = "data/thom_ml02.ogg";
+bool play_music = true;	// XXX: change this before release :)
+const char *music_fname = "data/bassbandit_music.ogg";
 
 vector<dsys::Part*> parts;
 
-static const char *title_str = "Mindlapse - Evoke 2006 Demo";
+static const char *title_str = "Mindflush / MLFC - PixelShow 2007";
 
 int main(int argc, char **argv) {
 	for(int i=1; i<argc; i++) {
@@ -61,6 +61,7 @@ bool init() {
 	}
 
 	fxwt::set_window_title(title_str);
+	SDL_ShowCursor(0);
 
 	fxwt::set_display_handler(update_gfx);
 	fxwt::set_idle_handler(update_gfx);
@@ -69,7 +70,11 @@ bool init() {
 	fxwt::set_button_handler(bn_handler);
 	atexit(clean_up);
 
+#if defined(WIN32) || defined(__WIN32__)
+	dsys::overlay(get_texture("data/img/loading_w32.jpg"), Vector2(0, 0), Vector2(1, 1), 1.0);
+#else
 	dsys::overlay(get_texture("data/img/loading.jpg"), Vector2(0, 0), Vector2(1, 1), 1.0);
+#endif
 	flip();
 
 	set_scene_data_path("data/img");
@@ -84,9 +89,9 @@ bool init() {
 	dsys::start_demo();
 
 	// start music
-	/*if(play_music && sdlvf_init(music_fname) != SDLVF_PLAYING) {
+	if(play_music && sdlvf_init(music_fname) != SDLVF_PLAYING) {
 		error("could not open music: %s", music_fname);
-	}*/
+	}
 
 	timer_reset(&timer);
 	timer_start(&timer);
@@ -96,7 +101,7 @@ bool init() {
 }
 
 void update_gfx() {
-	//if(play_music) sdlvf_check();
+	if(play_music) sdlvf_check();
 	
 	if(dsys::update_graphics() == -1) exit(0);
 
@@ -107,6 +112,8 @@ void update_gfx() {
 
 void clean_up() {
 	static bool clean_up_called = false;
+
+	SDL_ShowCursor(1);
 
 	if(clean_up_called) {
 		warning("Multiple clean_up() calls");

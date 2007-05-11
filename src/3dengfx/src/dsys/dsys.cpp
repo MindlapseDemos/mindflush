@@ -75,37 +75,30 @@ bool dsys::init() {
 
 	int next_size_x, next_size_y;
 	
-	rtex_size_x = best_tex_size(scrx);
-	rtex_size_y = best_tex_size(scry);
+	rtex_size_x = best_tex_size(scrx - 1);
+	rtex_size_y = best_tex_size(scry - 1);
 	
 	next_size_x = rtex_size_x * 2;
 	next_size_y = rtex_size_y * 2;
 		
 	info("allocating dsys render targets:");
 
-	if (!engfx_state::sys_caps.non_power_of_two_textures)
-	{
+	//if (!engfx_state::sys_caps.non_power_of_two_textures)
+	//{
 		// make a high-res texture and 3 low-res
 		for(int i=0; i<4; i++) {
-			int x = i ? rtex_size_x : next_size_x;
-			int y = i ? rtex_size_y : next_size_y;
+			int x = (i > 1) ? rtex_size_x : next_size_x;
+			int y = (i > 1) ? rtex_size_y : next_size_y;
 			tex[i] = new Texture(x, y);
 			info("  %d - %dx%d", i, x, y);
 		}
 
 		tex_mat[0].set_scaling(Vector3((float)scrx / (float)next_size_x, (float)scry / (float)next_size_y, 1));
+		tex_mat[1].set_scaling(Vector3((float)scrx / (float)next_size_x, (float)scry / (float)next_size_y, 1));
 
-		info("--- dsys texture matrix [%d] ----", 0);
-		info("%.2f %.2f %.2f %.2f", tex_mat[0][0][0], tex_mat[0][0][1], tex_mat[0][0][2], tex_mat[0][0][3]);
-		info("%.2f %.2f %.2f %.2f", tex_mat[0][1][0], tex_mat[0][1][1], tex_mat[0][1][2], tex_mat[0][1][3]);
-		info("%.2f %.2f %.2f %.2f", tex_mat[0][2][0], tex_mat[0][2][1], tex_mat[0][2][2], tex_mat[0][2][3]);
-		info("%.2f %.2f %.2f %.2f", tex_mat[0][3][0], tex_mat[0][3][1], tex_mat[0][3][2], tex_mat[0][3][3]);
-
-		
-		tex_mat[1] = Matrix4x4::identity_matrix;
 		tex_mat[2] = Matrix4x4::identity_matrix;
 		tex_mat[3] = Matrix4x4::identity_matrix;
-	}
+	/*}
 	else
 	{
 		for (int i=0; i<4; i++)
@@ -114,7 +107,7 @@ bool dsys::init() {
 			info("  %d - %dx%d", i, scrx, scry);
 			tex_mat[i] = Matrix4x4::identity_matrix;
 		}
-	}
+	}*/
 
 	strcpy(script_fname, "demoscript");
 

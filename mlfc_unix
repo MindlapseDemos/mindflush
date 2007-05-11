@@ -1,0 +1,37 @@
+#!/bin/sh
+
+os=`uname -s`
+arch=`uname -m`
+nobin='no binary for your architecture, type make to compile and run ./mlfc afterwards'
+
+case "$os" in
+Linux)
+        if [ "$arch" = 'i386' -o "$arch" = 'i586' -o "$arch" = 'i686' ]; then
+				export LD_LIBRARY_PATH=lib
+				arch_suffix=gnulinux-x86_32
+        elif [ "$arch" = 'x86_64' ]; then
+				export LD_LIBRARY_PATH=lib64
+				arch_suffix=gnulinux-x86_64
+        else
+                echo $nobin
+                exit 1
+        fi
+        ;;
+
+*)
+        echo $nobin
+        exit 1
+        ;;
+esac
+
+if [ -z "$arch_suffix" ]; then
+	echo $nobin
+	exit 1
+fi
+
+if [ -z "$RAN_GUI" -a -n "`ls gui/guicfg-$arch_suffix`" ]; then
+	export RAN_GUI=true
+	gui/guicfg-$arch_suffix $@
+else
+	bin/mlfc-$arch_suffix $@
+fi

@@ -1,6 +1,6 @@
 #include "p_intro.h"
 
-#define MLCURVE 	"data/curves/ml1.curve"
+#define MLCURVE 	"data/curves/mlfc.curve"
 
 static Vector3 curve_xform(const Vector3 &pt);
 

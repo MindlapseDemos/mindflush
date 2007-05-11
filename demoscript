@@ -1,0 +1,73 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0 fx overlay 11000 1500 data/img/haltext1.png sdr/radial3_p.glsl
+0 fx overlay 12500 1100 data/img/haltext2.png sdr/radial3_p.glsl
+0 fx overlay 128000 2s data/img/null.ppm sdr/fade2black_p.glsl
+0 fx overlay 13600 900 data/img/haltext3.png sdr/radial3_p.glsl
+0 fx overlay 14500 7500 data/img/logo.jpg sdr/disp2_p.glsl
+0 fx overlay 21500 1s data/img/null.ppm sdr/fade_unfade_p.glsl
+0 fx overlay 3500 3500 t0 sdr/radial_p.glsl
+0 fx overlay 42s 11s t0 sdr/radial2_p.glsl
+0 fx overlay 69500 1s data/img/null.ppm sdr/fade_unfade_p.glsl
+0 fx overlay 7250 3500 t0 sdr/radial_p.glsl
+0 fx overlay 88s 2s t1 sdr/slide_p.glsl
+0 rename_part dcurve zdcurve
+0 rename_part greets agreets
+0 rename_part tunnel 0tunnel
+0 set_rtarget intro t0
+0 start_part intro
+# 1 "<built-in>"
+# 1 "<command line>"
+# 1 "demoscript.h"
+# 1 "demoscript.h"
+# 23 "demoscript.h"
+10750 end_part intro
+22000 start_part plat
+40000 start_part 0tunnel
+42000 end_part plat
+42000 set_rtarget 0tunnel t0
+44000 set_rtarget box t0
+44000 start_part box
+53000 set_rtarget box fb
+55000 end_part 0tunnel
+58000 start_part zdcurve
+68000 end_part zdcurve
+70000 end_part box
+70000 start_part agreets
+88000 set_rtarget agreets t1
+88000 start_part credits
+90000 end_part agreets
+130000 end_part credits

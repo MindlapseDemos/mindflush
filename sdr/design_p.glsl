@@ -1,9 +1,11 @@
-uniform sampler2D tex;
 uniform float compl;
+
+#define H	0.05
 
 void main()
 {
-	vec4 tcol = texture2D(tex, gl_TexCoord[0].st);
-	tcol.a = tcol.r < compl && tcol.r > 0.01 ? 1.0 : 0.0;//smoothstep(compl - 0.1, compl + 0.1, tcol.a);
-	gl_FragColor = tcol;
+	vec4 col = gl_FrontMaterial.diffuse;
+	vec2 tc = gl_TexCoord[0].st;
+	float alpha = 1.0 - smoothstep(compl - H, compl + H, tc.t);
+	gl_FragColor = col * alpha * col.a;
 }
