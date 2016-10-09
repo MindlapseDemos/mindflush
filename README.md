@@ -4,7 +4,7 @@ Mindflush / MLFC
 This is a rushed demo we made for the pixelshow 2007 demoparty. It won 2nd place
 in the demo competition.
 
-![screenshot](http://content.pouet.net/files/screenshots/00030/00030647.jpg)
+![screenshot](http://nuclear.mutantstargoat.com/sw/demos/shots/mindflush-thumb.jpg)
 
 Pouet page: http://www.pouet.net/prod.php?which=30647
 
