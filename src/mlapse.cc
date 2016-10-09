@@ -25,12 +25,23 @@ vector<dsys::Part*> parts;
 
 static const char *title_str = "Mindflush / MLFC - PixelShow 2007";
 
+bool render_demo = false;
+const char *render_path = "frames";
+
 int main(int argc, char **argv) {
 	for(int i=1; i<argc; i++) {
 		if(argv[i][0] == '-' && argv[i][2] == 0) {
 			switch(argv[i][1]) {
 			case 'm':
 				play_music = !play_music;
+				break;
+
+			case 'r':
+				render_demo = true;
+				break;
+
+			case 'p':
+				render_path = argv[++i];
 				break;
 
 			default:
@@ -86,7 +97,11 @@ bool init() {
 		info("adding part: %s", parts[i]->get_name());
 	}
 
-	dsys::start_demo();
+	if(!render_demo) {
+		dsys::start_demo();
+	} else {
+		dsys::render_demo(25, render_path);
+	}
 
 	// start music
 	if(play_music && sdlvf_init(music_fname) != SDLVF_PLAYING) {

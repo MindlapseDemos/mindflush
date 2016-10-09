@@ -189,6 +189,7 @@ void dsys::overlay(Texture *tex, const Vector2 &corner1, const Vector2 &corner2,
 	set_zbuffering(true);
 	set_lighting(true);
 
+	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
