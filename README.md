@@ -4,8 +4,10 @@ Mindflush / MLFC
 This is a rushed demo we made for the pixelshow 2007 demoparty. It won 2nd place
 in the demo competition.
 
-Pouet page: http://www.pouet.net/prod.php?which=30647 
-Release archive with binaries: https://files.scene.org/view/parties/2007/pixelshow07/demo/mlfc-mflush.tgz 
+Pouet page: http://www.pouet.net/prod.php?which=30647
+
+Release archive with binaries: https://files.scene.org/view/parties/2007/pixelshow07/demo/mlfc-mflush.tgz
+
 Video capture: https://www.youtube.com/watch?v=3PXz421gXTQ
 
 Credits
