@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "3dengfx_config.h"
 #include "image.h"
 #include <stdio.h>
+#include <string.h>
 
 #ifdef IMGLIB_USE_PNG
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <SDL/SDL.h>
 #include "3dengfx/3dengfx.hpp"
 #include "common/timer.h"
 #include "common/fps_counter.h"
